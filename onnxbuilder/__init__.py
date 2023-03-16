@@ -212,7 +212,6 @@ class Graph:
 
     def _make_name(self, name: str | None) -> str:
         if name is None:
-            name = f"{self.prefix}value_{self._name_count}"
+            name = f"value_{self._name_count}"
             self._name_count += 1
-            return name
-        return name
+        return self.prefix + name

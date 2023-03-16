@@ -1,4 +1,5 @@
 .pdm.toml
+/build/
 /doc/_build
 /doc/modules.rst
 /doc/onnxbuilder.rst
