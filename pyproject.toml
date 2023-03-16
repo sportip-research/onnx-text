@@ -1,0 +1,58 @@
+[project]
+name = "onnxbuilder"
+description = "Simple ONNX Builder from Scratch"
+authors = [
+    {name = "Regen"},
+]
+dependencies = [
+    "onnx>=1.13.1",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["onnx"]
+classifiers = [
+    "Development Status :: 3 - Alpha", "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+]
+dynamic = ["version"]
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.version]
+source = "scm"
+write_to = "onnxbuilder/version.py"
+write_template = "__version__ = '{}'"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.2.2",
+    "onnxruntime>=1.14.1",
+]
+lint = [
+    "isort>=5.12.0",
+    "black>=23.1.0",
+    "flake8>=6.0.0",
+    "mypy>=1.1.1",
+]
+doc = [
+    "sphinx>=5.3.0",
+    "sphinx-rtd-theme>=1.1.1",
+    "sphinxcontrib-bibtex>=2.5.0",
+]
+
+[tool.pdm.scripts]
+doc = {shell = "sphinx-apidoc -fo doc onnxbuilder && sphinx-build doc doc/_build"}
+test = "pytest -sv tests"
+
+[tool.pdm.scripts.lint]
+shell = """
+    isort --check onnxbuilder tests
+    black --check onnxbuilder tests
+    flake8 onnxbuilder tests
+    mypy onnxbuilder tests
+"""
