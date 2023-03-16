@@ -1,5 +1,8 @@
 # onnxbuilder
 
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/regen100/onnxbuilder/ci.yml)](https://github.com/regen100/onnxbuilder/actions/workflows/ci.yml)
+[![Read the Docs](https://img.shields.io/readthedocs/onnxbuilder)](http://onnxbuilder.readthedocs.io/)
+
 Simple ONNX Builder from Scratch
 
 ## Usage
