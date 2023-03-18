@@ -13,34 +13,34 @@ from onnxbuilder import Graph
 @pytest.fixture
 def simple_model() -> onnx.ModelProto:
     g = Graph("simple")
-    x = g.value(np.float32, (3,), "x")
-    y = g.node("Abs", inputs=[x], outputs=g.value(np.float32, "y"))
-    return g.as_model(inputs=[x], outputs=[y])
+    x = g.value(np.float32, ("N",), "x")
+    y = g.node("Abs", inputs=[x], outputs=g.value(np.float32, None, "y"))
+    return onnx.helper.make_model(g.build(inputs=[x], outputs=[y]))
 
 
 @pytest.fixture
 def if_model() -> onnx.ModelProto:
     g = Graph("if")
     x = g.value(np.float32, (), "x")
-    thresh = g.const(np.array(1, np.float32), "thresh")
+    thresh = g.tensor(np.array(1, np.float32), "thresh")
     cond = g.node("Greater", inputs=[x, thresh], outputs=g.value(np.bool_, ()))
 
     then_g = Graph("then", prefix="then/")
-    then_output = then_g.node("Identity", inputs=[x], outputs=then_g.value_like(x))
+    then_output = then_g.node("Identity", inputs=[x], outputs=then_g.value(np.float32))
 
     else_g = Graph("else", prefix="else/")
     else_output = else_g.node(
-        "Identity", inputs=[thresh], outputs=else_g.value_like(thresh)
+        "Identity", inputs=[thresh], outputs=else_g.value(np.float32)
     )
 
     y = g.node(
         "If",
         inputs=[cond],
         outputs=g.value(np.float32, ()),
-        then_branch=then_g.as_graph(inputs=[], outputs=[then_output]),
-        else_branch=else_g.as_graph(inputs=[], outputs=[else_output]),
+        then_branch=then_g.build(inputs=[], outputs=[then_output]),
+        else_branch=else_g.build(inputs=[], outputs=[else_output]),
     )
-    return g.as_model(inputs=[x], outputs=[y])
+    return onnx.helper.make_model(g.build(inputs=[x], outputs=[y]))
 
 
 @pytest.mark.parametrize(

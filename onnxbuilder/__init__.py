@@ -1,3 +1,4 @@
+import itertools
 from typing import Any, Sequence, overload
 
 import numpy as np
@@ -16,7 +17,7 @@ class Graph:
     "graph documentation"
 
     prefix: str
-    "prefix for auto name"
+    "prefix for value and node names"
 
     _nodes: list[onnx.NodeProto]
     _initializers: list[onnx.TensorProto]
@@ -37,7 +38,7 @@ class Graph:
     def value(
         self,
         elem_type: int | Any,
-        shape: Sequence[str | int | None] | None,
+        shape: Sequence[str | int | None] | None = None,
         name: str | None = None,
         doc_string: str = "",
         shape_denotation: list[str] | None = None,
@@ -54,67 +55,38 @@ class Graph:
         :return: new ValueInfoProto
         """
 
-        if isinstance(elem_type, int):
-            elem_type_int = elem_type
-        else:
-            elem_type_int = onnx.helper.np_dtype_to_tensor_dtype(np.dtype(elem_type))
+        name = self._make_value_name(name)
+        if not isinstance(elem_type, int):
+            elem_type = onnx.helper.np_dtype_to_tensor_dtype(np.dtype(elem_type))
 
         ret = onnx.helper.make_tensor_value_info(
-            self._make_name(name), elem_type_int, shape, doc_string, shape_denotation
+            name, elem_type, shape, doc_string, shape_denotation
         )
         self._value_infos.append(ret)
         return ret
 
-    def value_like(
+    def tensor(
         self,
-        value: onnx.ValueInfoProto,
+        value: npt.ArrayLike,
         name: str | None = None,
-        doc_string: str = "",
-    ) -> onnx.ValueInfoProto:
-        """Make a value with same type and shape of the given value
+    ) -> onnx.TensorProto:
+        """Make a constant tensor
 
-        :param value: reference of type and shape
         :param name: value name
             (if not specified, the name will be generated automatically)
-        :param doc_string: value documentation
-        :return: new ValueInfoProto
+        :return: new TensorProto
         """
 
-        ret = onnx.helper.make_value_info(self._make_name(name), value.type, doc_string)
-        self._value_infos.append(ret)
-        return ret
-
-    def const(
-        self,
-        arr: npt.NDArray[Any],
-        name: str | None = None,
-        doc_string: str = "",
-        shape_denotation: list[str] | None = None,
-    ) -> onnx.ValueInfoProto:
-        """Make a value with Initializer
-
-        :param arr: Initializer value
-        :param name: value name
-            (if not specified, the name will be generated automatically)
-        :param doc_string: value documentation
-        :param shape_denotation: dim documentation
-        :return: new ValueInfoProto
-        """
-
-        tensor = onnx.numpy_helper.from_array(arr)
-        self._initializers.append(tensor)
-
-        ret = self.value(
-            tensor.data_type, tensor.dims, name, doc_string, shape_denotation
-        )
-        tensor.name = ret.name
+        name = self._make_value_name(name)
+        ret = onnx.numpy_helper.from_array(np.asarray(value), name)
+        self._initializers.append(ret)
         return ret
 
     @overload
     def node(
         self,
         op_type: str,
-        inputs: Sequence[onnx.ValueInfoProto | None],
+        inputs: Sequence[onnx.ValueInfoProto | onnx.TensorProto | None],
         outputs: onnx.ValueInfoProto,
         name: str | None = None,
         doc_string: str | None = None,
@@ -127,7 +99,7 @@ class Graph:
     def node(
         self,
         op_type: str,
-        inputs: Sequence[onnx.ValueInfoProto | None],
+        inputs: Sequence[onnx.ValueInfoProto | onnx.TensorProto | None],
         outputs: Sequence[onnx.ValueInfoProto],
         name: str | None = None,
         doc_string: str | None = None,
@@ -139,7 +111,7 @@ class Graph:
     def node(
         self,
         op_type: str,
-        inputs: Sequence[onnx.ValueInfoProto | None],
+        inputs: Sequence[onnx.ValueInfoProto | onnx.TensorProto | None],
         outputs: onnx.ValueInfoProto | Sequence[onnx.ValueInfoProto],
         name: str | None = None,
         doc_string: str | None = None,
@@ -158,6 +130,9 @@ class Graph:
         :return: single output value or list of output values
         """
 
+        if name is not None:
+            name = f"{self.prefix}{name}"
+
         input_names = ["" if i is None else i.name for i in inputs]
         output_names = [
             i.name for i in (outputs if isinstance(outputs, Sequence) else [outputs])
@@ -169,7 +144,7 @@ class Graph:
         )
         return outputs
 
-    def as_graph(
+    def build(
         self,
         inputs: Sequence[onnx.ValueInfoProto],
         outputs: Sequence[onnx.ValueInfoProto],
@@ -181,6 +156,10 @@ class Graph:
         :return: new graph
         """
 
+        value_infos = {val.name: val for val in self._value_infos}
+        for val in itertools.chain(inputs, outputs):
+            value_infos.pop(val.name, None)
+
         return onnx.helper.make_graph(
             self._nodes,
             self.name,
@@ -188,29 +167,10 @@ class Graph:
             outputs,
             self._initializers,
             self.doc_string,
-            self._value_infos,
+            list(value_infos.values()),
         )
 
-    def as_model(
-        self,
-        inputs: Sequence[onnx.ValueInfoProto],
-        outputs: Sequence[onnx.ValueInfoProto],
-        opset: int | None = None,
-        **kwargs: Any,
-    ) -> onnx.ModelProto:
-        """Export as ONNX model
-
-        :param inputs: list of input values
-        :param outputs: list of output values
-        :param opset: opset version
-        :return: new model
-        """
-
-        if opset is not None:
-            kwargs["opset_imports"] = [onnx.helper.make_opsetid("", opset)]
-        return onnx.helper.make_model(self.as_graph(inputs, outputs), **kwargs)
-
-    def _make_name(self, name: str | None) -> str:
+    def _make_value_name(self, name: str | None) -> str:
         if name is None:
             name = f"value_{self._name_count}"
             self._name_count += 1
