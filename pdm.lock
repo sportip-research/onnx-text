@@ -271,6 +271,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "pytest-lazy-fixture"
+version = "0.6.3"
+summary = "It helps to use fixtures in pytest.mark.parametrize"
+dependencies = [
+    "pytest>=3.2.5",
+]
+
+[[package]]
 name = "requests"
 version = "2.28.2"
 requires_python = ">=3.7, <4"
@@ -396,7 +404,7 @@ summary = "HTTP library with thread-safe connection pooling, file post, and more
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:5819bcb6ea956275e3867cb232e89a26f86187aee566c9052e2444fb337f4dcc"
+content_hash = "sha256:5dac23e598c0c66899f18344e2999545dc0c366320374d2524084098456ca232"
 
 [metadata.files]
 "alabaster 0.7.13" = [
@@ -818,6 +826,10 @@ content_hash = "sha256:5819bcb6ea956275e3867cb232e89a26f86187aee566c9052e2444fb3
 "pytest 7.2.2" = [
     {url = "https://files.pythonhosted.org/packages/b2/68/5321b5793bd506961bd40bdbdd0674e7de4fb873ee7cab33dd27283ad513/pytest-7.2.2-py3-none-any.whl", hash = "sha256:130328f552dcfac0b1cec75c12e3f005619dc5f874f0a06e8ff7263f0ee6225e"},
     {url = "https://files.pythonhosted.org/packages/b9/29/311895d9cd3f003dd58e8fdea36dd895ba2da5c0c90601836f7de79f76fe/pytest-7.2.2.tar.gz", hash = "sha256:c99ab0c73aceb050f68929bc93af19ab6db0558791c6a0715723abe9d0ade9d4"},
+]
+"pytest-lazy-fixture 0.6.3" = [
+    {url = "https://files.pythonhosted.org/packages/2d/a1/2f2c1c2353350d66c4d110d283e422e4943eb5ad10effa9357ba66f7b5b9/pytest_lazy_fixture-0.6.3-py3-none-any.whl", hash = "sha256:e0b379f38299ff27a653f03eaa69b08a6fd4484e46fd1c9907d984b9f9daeda6"},
+    {url = "https://files.pythonhosted.org/packages/b2/82/ae6d2f6903719c4ec410dcd31ee24e3bce74b2cef3c5b9150ad36e8594b6/pytest-lazy-fixture-0.6.3.tar.gz", hash = "sha256:0e7d0c7f74ba33e6e80905e9bfd81f9d15ef9a790de97993e34213deb5ad10ac"},
 ]
 "requests 2.28.2" = [
     {url = "https://files.pythonhosted.org/packages/9d/ee/391076f5937f0a8cdf5e53b701ffc91753e87b07d66bae4a09aa671897bf/requests-2.28.2.tar.gz", hash = "sha256:98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf"},

@@ -1,4 +1,3 @@
-import functools
 from typing import Any
 
 import numpy as np
@@ -6,19 +5,20 @@ import numpy.typing as npt
 import onnx
 import onnxruntime
 import pytest
+from pytest_lazyfixture import lazy_fixture
 
 from onnxbuilder import Graph
 
 
-@functools.cache
+@pytest.fixture
 def simple_model() -> onnx.ModelProto:
     g = Graph("simple")
     x = g.value(np.float32, (3,), "x")
-    y = g.node("Abs", inputs=[x], outputs=g.value_like(x, "y"))
+    y = g.node("Abs", inputs=[x], outputs=g.value(np.float32, "y"))
     return g.as_model(inputs=[x], outputs=[y])
 
 
-@functools.cache
+@pytest.fixture
 def if_model() -> onnx.ModelProto:
     g = Graph("if")
     x = g.value(np.float32, (), "x")
@@ -43,39 +43,32 @@ def if_model() -> onnx.ModelProto:
     return g.as_model(inputs=[x], outputs=[y])
 
 
-def idfn(val: Any) -> str | None:
-    if isinstance(val, (onnx.ModelProto)):
-        return val.graph.name
-    return None
-
-
 @pytest.mark.parametrize(
     "model, inputs, expects",
     [
         (
-            simple_model(),
+            lazy_fixture("simple_model"),
             [np.array([-1, 0, 1], np.float32)],
             [np.array([1, 0, 1], np.float32)],
         ),
         (
-            if_model(),
+            lazy_fixture("if_model"),
             [np.array(0, np.float32)],
             [np.array(1, np.float32)],
         ),
         (
-            if_model(),
+            lazy_fixture("if_model"),
             [np.array(1, np.float32)],
             [np.array(1, np.float32)],
         ),
         (
-            if_model(),
+            lazy_fixture("if_model"),
             [np.array(2, np.float32)],
             [np.array(2, np.float32)],
         ),
     ],
-    ids=idfn,
 )
-def test_model(
+def test_run_model(
     model: onnx.ModelProto,
     inputs: list[npt.NDArray[Any]],
     expects: list[npt.NDArray[Any]],
