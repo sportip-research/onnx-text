@@ -175,3 +175,16 @@ class Graph:
             name = f"value_{self._name_count}"
             self._name_count += 1
         return self.prefix + name
+
+
+def make_model_with_shape_inference(
+    graph: onnx.GraphProto, **kwargs: Any
+) -> onnx.ModelProto:
+    """Construct a model with shape inference
+
+    :param graph: graph
+    :param kwargs: any attribute to add to the model
+    :return: shape inferenced model
+    """
+
+    return onnx.shape_inference.infer_shapes(onnx.helper.make_model(graph, **kwargs))
