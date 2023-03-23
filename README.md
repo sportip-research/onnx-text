@@ -11,21 +11,34 @@ Simple ONNX Builder from Scratch
 $ pip install onnxbuilder onnxruntime
 ```
 
+### Python Interface
+
 ```python
 import numpy as np
-import onnx
 import onnxruntime
 
-from onnxbuilder import Graph
+from onnxbuilder import to_model
 
-g = Graph("g")
-x = g.value(np.float32, ("N",), "x")
-y = g.node("Abs", inputs=[x], outputs=g.value(np.float32))
-model = onnx.helper.make_model(g.build(inputs=[x], outputs=[y]))
+# convert to ONNX Model
+code = """
+x: float32[N]
+y: float32[N]
+sum = Add(x, y): float32
+"""
+model = to_model(code)
 
+# check output
 session = onnxruntime.InferenceSession(
     model.SerializeToString(), providers=["CPUExecutionProvider"]
 )
-outputs = session.run(None, {"x": np.array([-1, 0, 1], np.float32)})
-print(outputs)  # [array([1., 0., 1.], dtype=float32)]
+x = np.array([3, 4, 5], np.float32)
+y = np.array([3, 4, 5], np.float32)
+outputs = session.run(None, {"x": x, "y": y})
+print(outputs)  # [array([ 6.,  8., 10.], dtype=float32)]
+```
+
+### CLI
+
+```bash
+$ python -m onnxbuilder <code.txt >model.onnx
 ```

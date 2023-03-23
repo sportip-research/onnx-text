@@ -6,6 +6,7 @@ authors = [
 ]
 dependencies = [
     "onnx>=1.13.1",
+    "pyparsing>=3.0.9",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -31,7 +32,6 @@ write_template = "__version__ = '{}'"
 [tool.pdm.dev-dependencies]
 dev = [
     "pytest>=7.2.2",
-    "pytest-lazy-fixture>=0.6.3",
     "onnxruntime>=1.14.1",
 ]
 lint = [
