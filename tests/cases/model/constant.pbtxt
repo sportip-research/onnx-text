@@ -1,0 +1,23 @@
+ir_version: 8
+graph {
+  node {
+    output: "x"
+    name: "agraph/node_0"
+    op_type: "f"
+    attribute {
+      name: "b"
+      ints: -128
+      type: INTS
+    }
+    domain: ""
+  }
+  name: "agraph"
+  initializer {
+    data_type: 7
+    int64_data: 65535
+    name: "a"
+  }
+}
+opset_import {
+  version: 18
+}

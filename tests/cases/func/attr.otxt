@@ -1,0 +1,8 @@
+<
+  opset_import: ["" : 10],
+  domain: "local",
+  doc_string: "Function foo."
+>
+foo <a> (x) => (y) {
+  y = f<b:float = @a>(x)
+}

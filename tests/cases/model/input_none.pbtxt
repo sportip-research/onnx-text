@@ -1,0 +1,15 @@
+ir_version: 8
+graph {
+  node {
+    input: ""
+    input: "x"
+    output: "y"
+    name: "agraph/node_0"
+    op_type: "f"
+    domain: ""
+  }
+  name: "agraph"
+}
+opset_import {
+  version: 18
+}

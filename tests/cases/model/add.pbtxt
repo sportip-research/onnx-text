@@ -1,0 +1,45 @@
+ir_version: 8
+graph {
+  node {
+    input: "x"
+    input: "y"
+    output: "z"
+    name: "agraph/node_0"
+    op_type: "Add"
+    domain: ""
+  }
+  name: "agraph"
+  input {
+    name: "x"
+    type {
+      tensor_type {
+        elem_type: 1
+        shape {
+        }
+      }
+    }
+  }
+  input {
+    name: "y"
+    type {
+      tensor_type {
+        elem_type: 1
+        shape {
+        }
+      }
+    }
+  }
+  output {
+    name: "z"
+    type {
+      tensor_type {
+        elem_type: 1
+        shape {
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 18
+}

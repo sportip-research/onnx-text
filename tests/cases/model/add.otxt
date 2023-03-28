@@ -1,0 +1,3 @@
+agraph (float x, float y) => (float z) {
+  z = Add(x, y)
+}

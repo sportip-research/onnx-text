@@ -1,0 +1,53 @@
+================================================================================
+input and output
+================================================================================
+agraph (int8 a) => (float b) {}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)))
+          (id)))
+      (value_info_list
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)))
+          (id)))
+      (statement_list))))
+
+================================================================================
+dynamic axis
+================================================================================
+agraph (int8[N, ?, ?, 3] a) => () {}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)
+              (tensor_dims
+                (tensor_dim
+                  (id))
+                (tensor_dim
+                  (unk))
+                (tensor_dim
+                  (unk))
+                (tensor_dim
+                  (int_constant)))))
+          (id)))
+      (value_info_list)
+      (statement_list))))

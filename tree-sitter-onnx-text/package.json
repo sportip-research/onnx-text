@@ -1,0 +1,10 @@
+{
+  "tree-sitter": [
+    {
+      "scope": "source.onnx-text",
+      "file-types": [
+        "otxt"
+      ]
+    }
+  ]
+}

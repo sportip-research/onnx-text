@@ -1,0 +1,254 @@
+================================================================================
+function only
+================================================================================
+<
+  opset_import: [ "" : 10 ],
+  domain: "local",
+  doc_string: "Function square."
+>
+square (x) => (y) {
+  y = Mul (x, x)
+}
+--------------------------------------------------------------------------------
+
+(source_file
+  (function
+    (other_data_list
+      (other_data
+        (id)
+        (key_value_list
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (int_constant)))))
+      (other_data
+        (id)
+        (prim_constant
+          (str_constant)))
+      (other_data
+        (id)
+        (prim_constant
+          (str_constant))))
+    (id)
+    (fun_inout_list
+      (id))
+    (fun_inout_list
+      (id))
+    (statement_list
+      (statement
+        (node
+          (typed_id_list
+            (typed_id
+              (id)))
+          (node_call
+            (qualified_id
+              (id))
+            (node_inputs
+              (id)
+              (id))))))))
+
+================================================================================
+model and function
+================================================================================
+<
+  ir_version: 8,
+  opset_import: [ "" : 10, "local" : 1 ]
+>
+agraph (float[N, 128] X, float[128,10] W, float[10] B) => (float[N] C) {
+  T = local.foo(X, W, B)
+  C = local.square(T)
+}
+<
+  opset_import: [ "" : 10 ],
+  domain: "local",
+  doc_string: "Function foo."
+>
+foo (x, w, b) => (c) {
+  T = MatMul(x, w)
+  S = Add(T, b)
+  c = Softmax(S)
+}
+<
+  opset_import: [ "" : 10 ],
+  domain: "local",
+  doc_string: "Function square."
+>
+square (x) => (y) {
+  y = Mul (x, x)
+}
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (other_data_list
+      (other_data
+        (id)
+        (prim_constant
+          (int_constant)))
+      (other_data
+        (id)
+        (key_value_list
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (int_constant)))
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (int_constant))))))
+    (graph
+      (id)
+      (value_info_list
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)
+              (tensor_dims
+                (tensor_dim
+                  (id))
+                (tensor_dim
+                  (int_constant)))))
+          (id))
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)
+              (tensor_dims
+                (tensor_dim
+                  (int_constant))
+                (tensor_dim
+                  (int_constant)))))
+          (id))
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)
+              (tensor_dims
+                (tensor_dim
+                  (int_constant)))))
+          (id)))
+      (value_info_list
+        (value_info
+          (type
+            (tensor_type
+              (prim_type)
+              (tensor_dims
+                (tensor_dim
+                  (id)))))
+          (id)))
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id)
+                (id))
+              (node_inputs
+                (id)
+                (id)
+                (id)))))
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id)
+                (id))
+              (node_inputs
+                (id)))))))
+    (function
+      (other_data_list
+        (other_data
+          (id)
+          (key_value_list
+            (key_value_pair
+              (str_constant)
+              (prim_constant
+                (int_constant)))))
+        (other_data
+          (id)
+          (prim_constant
+            (str_constant)))
+        (other_data
+          (id)
+          (prim_constant
+            (str_constant))))
+      (id)
+      (fun_inout_list
+        (id)
+        (id)
+        (id))
+      (fun_inout_list
+        (id))
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)
+                (id)))))
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)
+                (id)))))
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)))))))
+    (function
+      (other_data_list
+        (other_data
+          (id)
+          (key_value_list
+            (key_value_pair
+              (str_constant)
+              (prim_constant
+                (int_constant)))))
+        (other_data
+          (id)
+          (prim_constant
+            (str_constant)))
+        (other_data
+          (id)
+          (prim_constant
+            (str_constant))))
+      (id)
+      (fun_inout_list
+        (id))
+      (fun_inout_list
+        (id))
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)
+                (id)))))))))

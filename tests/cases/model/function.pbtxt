@@ -1,0 +1,78 @@
+ir_version: 8
+graph {
+  node {
+    input: "x"
+    output: "y"
+    name: "agraph/node_0"
+    op_type: "foo"
+    domain: "local"
+  }
+  name: "agraph"
+  input {
+    name: "x"
+    type {
+      tensor_type {
+        elem_type: 1
+        shape {
+          dim {
+            dim_param: "N"
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "y"
+    type {
+      tensor_type {
+        elem_type: 1
+        shape {
+          dim {
+            dim_param: "N"
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  domain: ""
+  version: 10
+}
+opset_import {
+  domain: "local"
+  version: 1
+}
+functions {
+  name: "foo"
+  input: "x"
+  output: "y"
+  node {
+    output: "foo/tensor_0"
+    name: "foo/constant_node_0"
+    op_type: "Constant"
+    attribute {
+      name: "value"
+      t {
+        data_type: 1
+        float_data: 2.0
+        name: "foo/tensor_0"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "x"
+    input: "foo/tensor_0"
+    output: "y"
+    name: "foo/node_0"
+    op_type: "f"
+    domain: ""
+  }
+  doc_string: "Function foo."
+  opset_import {
+    domain: ""
+    version: 10
+  }
+  domain: "local"
+}

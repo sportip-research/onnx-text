@@ -1,0 +1,64 @@
+ir_version: 8
+graph {
+  node {
+    output: "a"
+    name: "agraph/node_0"
+    op_type: "F"
+    attribute {
+      name: "b"
+      i: 0
+      type: INT
+    }
+    attribute {
+      name: "c"
+      s: "str"
+      type: STRING
+    }
+    attribute {
+      name: "d"
+      floats: 0.0
+      floats: 1.0
+      type: FLOATS
+    }
+    attribute {
+      name: "e"
+      t {
+        data_type: 3
+        int32_data: 1
+        name: "agraph/tensor_0"
+      }
+      type: TENSOR
+    }
+    attribute {
+      name: "f"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "g"
+      tp {
+        tensor_type {
+          elem_type: 3
+          shape {
+            dim {
+              dim_param: "N"
+            }
+          }
+        }
+      }
+      type: TYPE_PROTO
+    }
+    attribute {
+      name: "h"
+      g {
+        name: "subgraph"
+      }
+      type: GRAPH
+    }
+    domain: ""
+  }
+  name: "agraph"
+}
+opset_import {
+  version: 18
+}

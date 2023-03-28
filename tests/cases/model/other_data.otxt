@@ -1,0 +1,6 @@
+<
+  ir_version: 7,
+  opset_import: ["": 17, "local": 1],
+  metadata_props: ["a": "b"],
+>
+agraph () => () {}

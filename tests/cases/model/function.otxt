@@ -1,0 +1,16 @@
+<
+  ir_version: 8,
+  opset_import: ["" : 10, "local" : 1]
+>
+agraph (float[N] x) => (float[N] y) {
+  y = local.foo(x)
+}
+
+<
+  opset_import: [ "" : 10 ],
+  domain: "local",
+  doc_string: "Function foo."
+>
+foo (x) => (y) {
+  y = f(x, float {2.})
+}

@@ -1,7 +1,9 @@
 .pdm.toml
 /build/
+/dist/
 /doc/_build
 /doc/modules.rst
 /doc/onnxbuilder.rst
 __pycache__/
 __pypackages__/
+tree-sitter-*/src/

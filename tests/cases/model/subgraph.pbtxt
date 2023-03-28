@@ -1,0 +1,68 @@
+ir_version: 8
+graph {
+  node {
+    input: "b"
+    output: "z"
+    name: "agraph/node_0"
+    op_type: "If"
+    attribute {
+      name: "else_branch"
+      g {
+        node {
+          input: "x"
+          output: "z_else"
+          name: "g2/node_0"
+          op_type: "bar"
+          domain: ""
+        }
+        name: "g2"
+        output {
+          name: "z_else"
+          type {
+            tensor_type {
+              elem_type: 1
+              shape {
+                dim {
+                  dim_param: "N"
+                }
+              }
+            }
+          }
+        }
+      }
+      type: GRAPH
+    }
+    attribute {
+      name: "then_branch"
+      g {
+        node {
+          input: "y"
+          output: "z_then"
+          name: "g1/node_0"
+          op_type: "foo"
+          domain: ""
+        }
+        name: "g1"
+        output {
+          name: "z_then"
+          type {
+            tensor_type {
+              elem_type: 1
+              shape {
+                dim {
+                  dim_param: "N"
+                }
+              }
+            }
+          }
+        }
+      }
+      type: GRAPH
+    }
+    domain: ""
+  }
+  name: "agraph"
+}
+opset_import {
+  version: 18
+}

@@ -1,0 +1,350 @@
+================================================================================
+tensor constant
+================================================================================
+agraph () => () {
+  int8 a = {1}
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (tensor_constant
+            (tensor_type
+              (prim_type))
+            (id)
+            (prim_constants
+              (prim_constant
+                (int_constant)))))))))
+
+================================================================================
+node
+================================================================================
+agraph () => () {
+  a = F(b)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)))))))))
+
+================================================================================
+multi input and output node
+================================================================================
+agraph () => () {
+  a, b, c = F(d, e, f)
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id))
+              (typed_id
+                (id))
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id)
+                (id)
+                (id)))))))))
+
+================================================================================
+nested
+================================================================================
+agraph () => () {
+  a = F(G(b))
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (node_call
+                  (qualified_id
+                    (id))
+                  (node_inputs
+                    (id)))))))))))
+
+================================================================================
+typed output
+================================================================================
+agraph () => () {
+  int8 a = F()
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (type
+                  (tensor_type
+                    (prim_type)))
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs))))))))
+
+================================================================================
+attr
+================================================================================
+agraph () => () {
+  a = F<b=0, c="str", d=[0., 1.], e=int8 {1}, f:float=1, g=int8[N], h=subgraph()=>(){}>()
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (attr_list
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (prim_constant
+                        (int_constant)))))
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (prim_constant
+                        (str_constant)))))
+                (attr
+                  (id)
+                  (attr_value
+                    (attr_value_list
+                      (single_attr_value
+                        (prim_constant
+                          (float_constant)))
+                      (single_attr_value
+                        (prim_constant
+                          (float_constant))))))
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (tensor_constant
+                        (tensor_type
+                          (prim_type))
+                        (prim_constants
+                          (prim_constant
+                            (int_constant)))))))
+                (attr
+                  (id)
+                  (attr_type
+                    (id))
+                  (attr_value
+                    (single_attr_value
+                      (prim_constant
+                        (int_constant)))))
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (type
+                        (tensor_type
+                          (prim_type)
+                          (tensor_dims
+                            (tensor_dim
+                              (id))))))))
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (graph
+                        (id)
+                        (value_info_list)
+                        (value_info_list)
+                        (statement_list))))))
+              (node_inputs))))))))
+
+================================================================================
+subgraph
+================================================================================
+agraph () => () {
+  z = If (b) <
+    then_branch = g1 () => (float[N] z_then) {
+        z_then = foo(y)
+    },
+    else_branch = g2 () => (float[N] z_else) {
+        z_else = bar(x)
+    }
+  >
+}
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (id))
+              (attr_list
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (graph
+                        (id)
+                        (value_info_list)
+                        (value_info_list
+                          (value_info
+                            (type
+                              (tensor_type
+                                (prim_type)
+                                (tensor_dims
+                                  (tensor_dim
+                                    (id)))))
+                            (id)))
+                        (statement_list
+                          (statement
+                            (node
+                              (typed_id_list
+                                (typed_id
+                                  (id)))
+                              (node_call
+                                (qualified_id
+                                  (id))
+                                (node_inputs
+                                  (id))))))))))
+                (attr
+                  (id)
+                  (attr_value
+                    (single_attr_value
+                      (graph
+                        (id)
+                        (value_info_list)
+                        (value_info_list
+                          (value_info
+                            (type
+                              (tensor_type
+                                (prim_type)
+                                (tensor_dims
+                                  (tensor_dim
+                                    (id)))))
+                            (id)))
+                        (statement_list
+                          (statement
+                            (node
+                              (typed_id_list
+                                (typed_id
+                                  (id)))
+                              (node_call
+                                (qualified_id
+                                  (id))
+                                (node_inputs
+                                  (id))))))))))))))))))
+
+================================================================================
+inline tensor
+================================================================================
+agraph () => () {
+  a = F(int8 {1})
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list
+        (statement
+          (node
+            (typed_id_list
+              (typed_id
+                (id)))
+            (node_call
+              (qualified_id
+                (id))
+              (node_inputs
+                (tensor_constant
+                  (tensor_type
+                    (prim_type))
+                  (prim_constants
+                    (prim_constant
+                      (int_constant))))))))))))

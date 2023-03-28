@@ -1,0 +1,21 @@
+name: "foo"
+input: "x"
+output: "y"
+node {
+  input: "x"
+  output: "y"
+  name: "foo/node_0"
+  op_type: "f"
+  attribute {
+    name: "b"
+    type: FLOAT
+    ref_attr_name: "a"
+  }
+  domain: ""
+}
+doc_string: "Function foo."
+opset_import {
+  domain: ""
+  version: 10
+}
+domain: "local"

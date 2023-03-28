@@ -1,0 +1,42 @@
+================================================================================
+header
+================================================================================
+<
+  ir_version: 7,
+  opset_import: ["": 10, "com.microsoft": 1],
+  metadata_props: ["key": "value"],
+>
+agraph () => () {}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (other_data_list
+      (other_data
+        (id)
+        (prim_constant
+          (int_constant)))
+      (other_data
+        (id)
+        (key_value_list
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (int_constant)))
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (int_constant)))))
+      (other_data
+        (id)
+        (key_value_list
+          (key_value_pair
+            (str_constant)
+            (prim_constant
+              (str_constant))))))
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list))))

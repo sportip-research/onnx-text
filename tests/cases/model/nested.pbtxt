@@ -1,0 +1,21 @@
+ir_version: 8
+graph {
+  node {
+    input: "x"
+    output: "agraph/value_0"
+    name: "agraph/node_0"
+    op_type: "g"
+    domain: ""
+  }
+  node {
+    input: "agraph/value_0"
+    output: "y"
+    name: "agraph/node_1"
+    op_type: "f"
+    domain: ""
+  }
+  name: "agraph"
+}
+opset_import {
+  version: 18
+}

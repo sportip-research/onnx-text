@@ -1,0 +1,21 @@
+ir_version: 8
+graph {
+  node {
+    input: "agraph/tensor_0"
+    output: "x"
+    name: "agraph/node_0"
+    op_type: "f"
+    domain: ""
+  }
+  name: "agraph"
+  initializer {
+    dims: 2
+    data_type: 3
+    int32_data: 0
+    int32_data: 1
+    name: "agraph/tensor_0"
+  }
+}
+opset_import {
+  version: 18
+}

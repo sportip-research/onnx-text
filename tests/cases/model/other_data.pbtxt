@@ -1,0 +1,16 @@
+ir_version: 7
+graph {
+  name: "agraph"
+}
+opset_import {
+  domain: ""
+  version: 17
+}
+opset_import {
+  domain: "local"
+  version: 1
+}
+metadata_props {
+  key: "a"
+  value: "b"
+}

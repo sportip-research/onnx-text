@@ -1,0 +1,4 @@
+agraph () => () {
+  int64 a = {UINT16_MAX}
+  x = f()<b=[INT8_MIN]>
+}

@@ -1,0 +1,23 @@
+ir_version: 8
+graph {
+  node {
+    output: "x"
+    name: "agraph/node_0"
+    op_type: "f"
+    domain: ""
+  }
+  name: "agraph"
+  value_info {
+    name: "x"
+    type {
+      tensor_type {
+        elem_type: 3
+        shape {
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 18
+}

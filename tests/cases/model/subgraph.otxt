@@ -1,0 +1,10 @@
+agraph () => () {
+  z = If (b) <
+    then_branch = g1 () => (float[N] z_then) {
+      z_then = foo(y)
+    },
+    else_branch = g2 () => (float[N] z_else) {
+      z_else = bar(x)
+    }
+  >
+}

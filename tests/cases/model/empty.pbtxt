@@ -1,0 +1,7 @@
+ir_version: 8
+graph {
+  name: "agraph"
+}
+opset_import {
+  version: 18
+}

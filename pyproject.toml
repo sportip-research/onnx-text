@@ -1,12 +1,12 @@
 [project]
-name = "onnxbuilder"
-description = "Simple ONNX Builder from Scratch"
+name = "onnx-text"
+description = "Text Format for Building ONNX Models"
 authors = [
     {name = "Regen"},
 ]
 dependencies = [
     "onnx>=1.13.1",
-    "pyparsing>=3.0.9",
+    "tree-sitter>=0.20.1",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -21,18 +21,22 @@ classifiers = [
 dynamic = ["version"]
 
 [build-system]
-requires = ["pdm-pep517>=1.0"]
-build-backend = "pdm.pep517.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [tool.pdm.version]
 source = "scm"
-write_to = "onnxbuilder/version.py"
+write_to = "onnx_text/_version.py"
 write_template = "__version__ = '{}'"
+
+[tool.pdm.build]
+source-includes = ["tree-sitter-onnx-text/src/parser.c"]
+is-purelib = false
 
 [tool.pdm.dev-dependencies]
 dev = [
     "pytest>=7.2.2",
-    "onnxruntime>=1.14.1",
+    "types-tree-sitter>=0.20.1.2",
 ]
 lint = [
     "isort>=5.12.0",
@@ -51,8 +55,8 @@ test = "pytest -sv tests"
 
 [tool.pdm.scripts.lint]
 shell = """
-    isort --check onnxbuilder tests
-    black --check onnxbuilder tests
-    flake8 onnxbuilder tests
-    mypy onnxbuilder tests
+    isort --check onnx_text tests
+    black --check onnx_text tests
+    flake8 onnx_text tests
+    mypy onnx_text tests
 """
