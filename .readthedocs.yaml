@@ -6,7 +6,7 @@ build:
     python: "3.10"
   jobs:
     pre_build:
-      - sphinx-apidoc -fo doc onnxbuilder
+      - sphinx-apidoc -fo doc onnx_text
 
 python:
   install:

@@ -18,6 +18,11 @@ jobs:
         with:
           python-version: "3.10"
           cache: true
+      - name: Install tree-sitter
+        run: |
+          curl -sSLO https://github.com/tree-sitter/tree-sitter/releases/download/v0.20.7/tree-sitter-linux-x64.gz
+          gzip -d tree-sitter-linux-x64.gz
+          sudo install -m 755 tree-sitter-linux-x64 /usr/local/bin/tree-sitter
       - name: Install
         run: |
           pdm install --no-lock --group :all

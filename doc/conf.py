@@ -1,4 +1,4 @@
-project = "onnxbuilder"
+project = "onnx-text"
 copyright = "2023, Regen"
 author = "Regen"
 

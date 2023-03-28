@@ -1,4 +1,4 @@
-Welcome to onnxbuilder's documentation!
+Welcome to onnx-text's documentation!
 =======================================
 
 .. toctree::

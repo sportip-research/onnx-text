@@ -30,7 +30,10 @@ write_to = "onnx_text/_version.py"
 write_template = "__version__ = '{}'"
 
 [tool.pdm.build]
-source-includes = ["tree-sitter-onnx-text/src/parser.c"]
+source-includes = [
+    "tree-sitter-onnx-text/src/**/*.c",
+    "tree-sitter-onnx-text/src/**/*.h",
+]
 is-purelib = false
 
 [tool.pdm.dev-dependencies]
@@ -50,8 +53,8 @@ doc = [
 ]
 
 [tool.pdm.scripts]
-doc = {shell = "sphinx-apidoc -fo doc onnxbuilder && sphinx-build doc doc/_build"}
-test = "pytest -sv tests"
+doc = {shell = "sphinx-apidoc -fo doc onnx_text && sphinx-build doc doc/_build"}
+test = "pytest tests -vv"
 
 [tool.pdm.scripts.lint]
 shell = """
