@@ -4,8 +4,9 @@ import importlib.metadata
 import warnings
 from typing import Any, TypeGuard, cast
 
-import numpy as np
 import onnx
+
+from .constants import NUMERIC_CONSTANTS
 
 with warnings.catch_warnings():
     warnings.filterwarnings(
@@ -22,29 +23,9 @@ parser_lib = importlib.metadata.distribution("onnx_text").locate_file(
 parser = Parser()
 parser.set_language(Language(str(parser_lib), "onnx_text"))
 
-Shape = list[int | str | None] | None
 
-NUMERIC_CONSTANTS = {}
-NUMERIC_CONSTANTS["INF"] = np.inf
-NUMERIC_CONSTANTS["NINF"] = np.NINF
-NUMERIC_CONSTANTS["NAN"] = np.nan
-NUMERIC_CONSTANTS["NZERO"] = np.NZERO
-NUMERIC_CONSTANTS["PZERO"] = np.PZERO
-NUMERIC_CONSTANTS["EULER_GAMMA"] = np.euler_gamma
-NUMERIC_CONSTANTS["PI"] = np.pi
-NUMERIC_CONSTANTS["E"] = np.e
-for bits in [8, 16, 32, 64]:
-    iinfo = np.iinfo(f"int{bits}")
-    NUMERIC_CONSTANTS[f"INT{bits}_MIN"] = iinfo.min
-    NUMERIC_CONSTANTS[f"INT{bits}_MAX"] = iinfo.max
-    iinfo = np.iinfo(f"uint{bits}")
-    NUMERIC_CONSTANTS[f"UINT{bits}_MIN"] = iinfo.min
-    NUMERIC_CONSTANTS[f"UINT{bits}_MAX"] = iinfo.max
-for bits in [16, 32, 64]:
-    finfo = np.finfo(f"float{bits}")
-    NUMERIC_CONSTANTS[f"FLOAT{bits}_MIN"] = float(finfo.min)
-    NUMERIC_CONSTANTS[f"FLOAT{bits}_MAX"] = float(finfo.max)
-del bits
+ATTRIBUTE_TYPE_ID = dict(onnx.AttributeProto.AttributeType.items())
+DATA_TYPE_ID = dict(onnx.TensorProto.DataType.items())
 
 
 class UnexpectedNodeError(RuntimeError):
@@ -303,40 +284,8 @@ def parse_tensor_dim(node: Node) -> str | int | None:
 
 def parse_prim_type(node: Node) -> int:
     assert node.type == "prim_type"
-    match node.text.decode():
-        case "float":
-            return onnx.TensorProto.FLOAT
-        case "uint8":
-            return onnx.TensorProto.UINT8
-        case "int8":
-            return onnx.TensorProto.INT8
-        case "uint16":
-            return onnx.TensorProto.UINT16
-        case "int16":
-            return onnx.TensorProto.INT16
-        case "int32":
-            return onnx.TensorProto.INT32
-        case "int64":
-            return onnx.TensorProto.INT64
-        case "string":
-            return onnx.TensorProto.STRING
-        case "bool":
-            return onnx.TensorProto.BOOL
-        case "float16":
-            return onnx.TensorProto.FLOAT16
-        case "double":
-            return onnx.TensorProto.DOUBLE
-        case "uint32":
-            return onnx.TensorProto.UINT32
-        case "uint64":
-            return onnx.TensorProto.UINT64
-        case "complex64":
-            return onnx.TensorProto.COMPLEX64
-        case "complex128":
-            return onnx.TensorProto.COMPLEX128
-        case "bfloat16":
-            return onnx.TensorProto.BFLOAT16
-    raise UnexpectedNodeError(node)
+    key = node.text.decode().upper()
+    return DATA_TYPE_ID[key]
 
 
 def parse_statement_list(node: Node, ctx: GraphParserContext) -> None:
@@ -476,9 +425,8 @@ def parse_attr(node: Node, ctx: GraphParserContext) -> tuple[str, Any]:
 
 def parse_attr_type(node: Node) -> onnx.AttributeProto.AttributeType:
     assert node.type == "attr_type"
-    types = dict(onnx.AttributeProto.AttributeType.items())
     key = parse_id(get_child_by_type_exact1(node, "id")).upper()
-    return cast(onnx.AttributeProto.AttributeType, types[key])
+    return cast(onnx.AttributeProto.AttributeType, ATTRIBUTE_TYPE_ID[key])
 
 
 def parse_attr_value(node: Node, ctx: GraphParserContext) -> Any:
