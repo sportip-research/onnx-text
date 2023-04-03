@@ -13,11 +13,13 @@ ONNX has its own [text format](https://github.com/onnx/onnx/blob/main/docs/Synta
 *   Inline initalizer `int8 a = {0}`
 *   Inline tensor value `y = f(int8 {0})`
 *   Typed node output `float[N, ?] y = f()`
-*   Numeric constant `y = f(float {PI}, int64 {INT64_MAX})`
+*   Numeric constants `y = f(float {PI}, int64 {INT64_MAX})`
 *   Empty input `y = f("", x)`
 *   Trailing comma `y = f(x,)`
 *   Including function file `%include "func.otxt"`
 *   Syntax highlight
+
+For further examples, see [tree-sitter test cases](tree-sitter-onnx-text/test/corpus) and [unittest cases](./tests/cases).
 
 ## Usage
 
