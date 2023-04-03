@@ -2,6 +2,7 @@ import collections
 import dataclasses
 import importlib.metadata
 import warnings
+from pathlib import Path
 from typing import Any, TypeGuard, cast
 
 import onnx
@@ -62,7 +63,8 @@ def parse_model(node: Node) -> onnx.ModelProto:
     graph = parse_graph(get_child_by_type_exact1(node, "graph"))
 
     fields["functions"] = [
-        parse_function(i) for i in get_children_by_type(node, "function")
+        parse_function_or_include(i)
+        for i in get_children_by_type(node, "function_or_include")
     ]
 
     model = onnx.helper.make_model(graph, **fields)
@@ -230,6 +232,29 @@ def parse_function(node: Node) -> onnx.FunctionProto:
 def parse_fun_inut_list(node: Node) -> list[str]:
     assert node.type == "fun_inout_list"
     return [parse_id(i) for i in get_children_by_type(node, "id")]
+
+
+def parse_function_or_include(node: Node) -> onnx.FunctionProto:
+    assert node.type == "function_or_include"
+
+    function_node = get_child_by_type(node, "function")
+    if function_node is not None:
+        return parse_function(function_node)
+
+    return parse_include(get_child_by_type_exact1(node, "include"))
+
+
+def parse_include(node: Node) -> onnx.FunctionProto:
+    assert node.type == "include"
+
+    fname = Path(parse_str_constant(get_child_by_type_exact1(node, "str_constant")))
+    try:
+        text = fname.read_text()
+        tree = to_ast(text.encode())
+        check_node(tree.root_node)
+        return parse_function(tree.root_node)
+    except Exception as e:
+        raise RuntimeError(f"error when parsing {fname}: {e}") from e
 
 
 def parse_value_info_list(node: Node) -> list[onnx.ValueInfoProto]:

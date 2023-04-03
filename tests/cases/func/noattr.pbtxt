@@ -1,0 +1,16 @@
+name: "foo"
+input: "x"
+output: "y"
+node {
+  input: "x"
+  output: "y"
+  name: "foo/node_0"
+  op_type: "f"
+  domain: ""
+}
+doc_string: "Function foo."
+opset_import {
+  domain: ""
+  version: 10
+}
+domain: "local"

@@ -40,3 +40,24 @@ agraph () => () {}
       (value_info_list)
       (value_info_list)
       (statement_list))))
+
+================================================================================
+include
+================================================================================
+agraph () => () {}
+
+%include "a.otxt"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (model
+    (graph
+      (id)
+      (value_info_list)
+      (value_info_list)
+      (statement_list))
+    (function_or_include
+      (include
+        (include_keyword)
+        (str_constant)))))

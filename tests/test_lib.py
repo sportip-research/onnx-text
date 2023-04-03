@@ -16,7 +16,7 @@ def idfn(val: Path) -> str:
 @pytest.mark.parametrize("case", model_dir.glob("*.otxt"), ids=idfn)
 def test_parse_model(case: Path) -> None:
     otxt = case.read_text()
-    proto = parse_model(otxt)
+    proto = parse_model(otxt, case.parent)
     expected = case.with_suffix(".pbtxt").read_text()
     assert str(proto) == expected
 

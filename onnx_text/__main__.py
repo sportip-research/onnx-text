@@ -13,10 +13,15 @@ def main() -> None:
         choices=["text", "binary"],
         help="output format (the default value is determined according to isatty)",
     )
+    parser.add_argument(
+        "-C",
+        "--dir",
+        help="base directroy to find function files",
+    )
     args = parser.parse_args()
 
     code = sys.stdin.read()
-    model = parse_model(code)
+    model = parse_model(code, args.dir)
 
     if args.format is None:
         args.format = "text" if sys.stdout.isatty() else "binary"

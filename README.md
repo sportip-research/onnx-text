@@ -16,6 +16,7 @@ ONNX has its own [text format](https://github.com/onnx/onnx/blob/main/docs/Synta
 *   Numeric constant `y = f(float {PI}, int64 {INT64_MAX})`
 *   Empty input `y = f("", x)`
 *   Trailing comma `y = f(x,)`
+*   Including function file `%include "func.otxt"`
 *   Syntax highlight
 
 ## Usage

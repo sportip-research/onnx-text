@@ -1,0 +1,8 @@
+<
+  opset_import: ["" : 10],
+  domain: "local",
+  doc_string: "Function foo."
+>
+foo (x) => (y) {
+  y = f(x)
+}

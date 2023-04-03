@@ -22,4 +22,6 @@
 (none) @constant
 (prim_constant (id) @constant)
 
+(include_keyword) @keyword
+
 (comment) @comment

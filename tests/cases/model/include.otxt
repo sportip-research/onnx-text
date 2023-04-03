@@ -1,0 +1,3 @@
+agraph () => () {}
+
+%include "../func/noattr.otxt"

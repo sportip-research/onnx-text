@@ -116,7 +116,8 @@ module.exports = grammar({
       ),
     other_data_list: ($) => seq("<", list($.other_data), ">"),
 
-    model: ($) => seq(optional($.other_data_list), $.graph, repeat($.function)),
+    model: ($) =>
+      seq(optional($.other_data_list), $.graph, repeat($.function_or_include)),
 
     fun_attr_list: ($) => seq("<", list(choice($.id, $.attr)), ">"),
     fun_inout_list: ($) => seq("(", list($.id), ")"),
@@ -130,6 +131,10 @@ module.exports = grammar({
         field("outputs", $.fun_inout_list),
         field("body", $.statement_list)
       ),
+
+    include_keyword: () => seq("%", "include"),
+    include: ($) => seq($.include_keyword, $.str_constant),
+    function_or_include: ($) => choice($.function, $.include),
   },
 });
 
