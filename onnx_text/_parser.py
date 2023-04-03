@@ -41,6 +41,8 @@ def to_ast(code: bytes) -> Tree:
 def check_node(node: Node) -> None:
     if node.type == "ERROR":
         raise ValueError(f"parse error: {node}")
+    if node.is_missing:
+        raise ValueError(f"missing: {node}")
     for child in node.children:
         check_node(child)
 
