@@ -1,6 +1,6 @@
 # onnx-text
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/regen100/onnx-text/ci.yml)](https://github.com/regen100/onnx-text/actions/workflows/ci.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/sportip-research/onnx-text/ci.yml)](https://github.com/sportip-research/onnx-text/actions/workflows/ci.yml)
 [![Read the Docs](https://img.shields.io/readthedocs/onnx-text)](http://onnx-text.readthedocs.io/)
 
 Text Format for Building ONNX Models
